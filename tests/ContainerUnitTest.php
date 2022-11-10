@@ -25,6 +25,8 @@ class ContainerUnitTest
 
     public function testBinding()
     {
+        Test::printInfo('Тест привязок');
+
         Test::run(
             desc: 'Привязка класса к интерфейсу',
             test: function () {
@@ -64,6 +66,8 @@ class ContainerUnitTest
 
     public function testSharing()
     {
+        Test::printInfo('Тест добавления объектов в контейнер');
+
         Test::run(
             desc: 'Добавление объекта в контейнер по указанному интерфейсу',
             test: function () {
@@ -85,8 +89,10 @@ class ContainerUnitTest
 
     public function testClosureInjection()
     {
+        Test::printInfo('Тест инъекции зависимостей для \Closure');
+
         Test::run(
-            desc: 'Инъекция зависиомстей в \Closure',
+            desc: 'Инъекция зависимостей',
             test: function () {
                 $arg2 = 'second parameter';
 
@@ -99,7 +105,7 @@ class ContainerUnitTest
         );
 
         Test::run(
-            desc: 'Не правильное описание параметров для внедрения зависимостей в \Closure',
+            desc: 'Не правильное описание параметров для внедрения зависимостей',
             test: function () {
                 Test::assertException(function () {
                     $this->container->tap(function (string $param2, TestDependency $testDependency) {
@@ -134,8 +140,10 @@ class ContainerUnitTest
 
     public function testMethodInjection(): void
     {
+        Test::printInfo('Тест инъекции зависимостей для метода класса');
+
         Test::run(
-            desc: 'Инъекция зависимостей в метод класса',
+            desc: 'Инъекция зависимостей',
             test: function () {
                 $testClass = new TestClass();
                 $injectionResult = $this->container->tap([$testClass, 'oneDependency']);
@@ -165,6 +173,8 @@ class ContainerUnitTest
 
     public function testContainerNew()
     {
+        Test::printInfo('Тест создание нового экземпляра объекта');
+
         Test::run(
             desc: 'Создание экземпляра класса, у которого в конструкторе стоит инициализация полей, без передачи параметров',
             test: function () {
@@ -186,8 +196,10 @@ class ContainerUnitTest
 
     public function testMethodSharedInjection()
     {
+        Test::printInfo('Тест инъекции зависимостей с ипсользованием объектов из контейнера');
+
         Test::run(
-            desc: 'Инъекция зависимостей в метод из списка доступных к внедрению объектов. Объекты были созданы ранее и могли быть изменены)',
+            desc: 'Инъекция зависимостей в метод из списка доступных к внедрению объектов (Объекты были созданы ранее и могли быть изменены)',
             test: function () {
                 $testDependency = new TestDependency(TestDependency::STATUS_MODIFIED);
                 $this->container->share($testDependency);
