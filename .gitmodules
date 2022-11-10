@@ -1,3 +1,4 @@
 [submodule "tests/Autoload"]
 	path = tests/Autoload
 	url = git@github.com:slpAkkie/Scal
+	branch = main
