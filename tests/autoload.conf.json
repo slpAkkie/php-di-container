@@ -1,0 +1,6 @@
+{
+    "mapping": {
+        "Framework\\Container\\": "..\\",
+        "Tests\\": ""
+    }
+}
