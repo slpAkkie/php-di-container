@@ -13,7 +13,7 @@ class ContainerUnitTest
         //
     }
 
-    public function all()
+    public function all(): void
     {
         $this->testBinding();
         $this->testSharing();
@@ -23,7 +23,7 @@ class ContainerUnitTest
         $this->testMethodSharedInjection();
     }
 
-    public function testBinding()
+    public function testBinding(): void
     {
         Test::printInfo('Тест привязок');
 
@@ -64,7 +64,7 @@ class ContainerUnitTest
         );
     }
 
-    public function testSharing()
+    public function testSharing(): void
     {
         Test::printInfo('Тест добавления объектов в контейнер');
 
@@ -87,7 +87,7 @@ class ContainerUnitTest
         );
     }
 
-    public function testClosureInjection()
+    public function testClosureInjection(): void
     {
         Test::printInfo('Тест инъекции зависимостей для \Closure');
 
@@ -171,7 +171,7 @@ class ContainerUnitTest
         );
     }
 
-    public function testContainerNew()
+    public function testContainerNew(): void
     {
         Test::printInfo('Тест создание нового экземпляра объекта');
 
@@ -194,7 +194,7 @@ class ContainerUnitTest
         );
     }
 
-    public function testMethodSharedInjection()
+    public function testMethodSharedInjection(): void
     {
         Test::printInfo('Тест инъекции зависимостей с ипсользованием объектов из контейнера');
 
