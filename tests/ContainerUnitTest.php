@@ -1,7 +1,5 @@
 <?php
 
-namespace Tests;
-
 use Framework\Container\Container;
 use TestModule\Test;
 

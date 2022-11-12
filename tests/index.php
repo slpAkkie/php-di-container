@@ -7,6 +7,4 @@ require_once APP_ROOT_PATH . '/Autoload/Initializer.php';
 
 
 
-use Tests\ContainerUnitTest;
-
 (new ContainerUnitTest())->all();
