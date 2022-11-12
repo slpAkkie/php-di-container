@@ -1,6 +1,7 @@
 {
     "mapping": {
         "Framework\\Container\\": "..\\",
+        "TestModule\\": "TestModule\\",
         "Tests\\": ""
     }
 }

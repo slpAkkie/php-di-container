@@ -2,8 +2,8 @@
 
 namespace Tests;
 
-use Tests\Test;
 use Framework\Container\Container;
+use TestModule\Test;
 
 class ContainerUnitTest
 {
