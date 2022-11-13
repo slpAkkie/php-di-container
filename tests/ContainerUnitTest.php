@@ -1,6 +1,7 @@
 <?php
 
 use Framework\Container\Container;
+use Framework\Container\Contracts\SingletonContract;
 use TestModule\Test;
 
 class ContainerUnitTest
@@ -174,7 +175,7 @@ class ContainerUnitTest
         Test::printInfo('Тест создание нового экземпляра объекта');
 
         Test::run(
-            desc: 'Создание экземпляра класса, у которого в конструкторе стоит инициализация полей, без передачи параметров',
+            desc: 'У класса в конструкторе описана инициализация полей, без передачи параметров',
             test: function () {
                 Test::assertNonException(function () {
                     $this->container->new(TestDependency::class);
@@ -183,11 +184,22 @@ class ContainerUnitTest
         );
 
         Test::run(
-            desc: 'Создание экземпляра класса, у которого в конструкторе стоит инициализация полей, с передачей параметров',
+            desc: 'У класса в конструкторе описана инициализация полей, с передачей параметров',
             test: function () {
                 Test::assertNonException(function () use (&$testDependency) {
                     $testDependency = $this->container->new(TestDependency::class, TestDependency::STATUS_MODIFIED);
                 });
+            }
+        );
+
+        Test::run(
+            desc: 'Создание экземпляра синглтона дважды, и получение одного и того же объекта',
+            test: function () {
+                $this->container->bind(TestAbstract::class, TestSingleton::class);
+                $this->container->new(TestAbstract::class, TestSingleton::STATUS_MODIFIED);
+                $instance = $this->container->new(TestSingleton::class);
+
+                Test::assertTrue($instance->status === TestSingleton::STATUS_MODIFIED);
             }
         );
     }
@@ -253,6 +265,11 @@ class TestDependency extends TestAbstract implements TestContract
     ) {
         //
     }
+}
+
+class TestSingleton extends TestDependency implements SingletonContract
+{
+    //
 }
 
 class TestClass

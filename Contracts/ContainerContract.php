@@ -4,7 +4,6 @@ namespace Framework\Container\Contracts;
 
 interface ContainerContract
 {
-
     /**
      * Устанавливант привязку интерфейса или абстрактного класса с его конкретной реализацией.
      *
@@ -15,14 +14,6 @@ interface ContainerContract
     public function bind(string $abstract, string $concrete): static;
 
     /**
-     * Получить привязку для интерфейса или абстрактного класса.
-     *
-     * @param string $abstract Интерфейс или абстрактный класс дял которого нужно получить привязку.
-     * @return string|null
-     */
-    public function resolveAbstract(string $abstract): ?string;
-
-    /**
      * Добавляет объект в контейнер по имени класса.
      *
      * @param object $object Объект, который нужно сделать доступным.
@@ -30,7 +21,7 @@ interface ContainerContract
      *                              Если не указано, то будет класс самого объекта.
      * @return static
      */
-    public function share(object $object): static;
+    public function share(object $object, ?string $abstract = null): static;
 
     /**
      * Получить объект из контейнера по привязанному интерфейсу или классу.

@@ -3,6 +3,7 @@
 namespace Framework\Container;
 
 use Framework\Container\Contracts\ContainerContract;
+use Framework\Container\Contracts\SingletonContract;
 use InvalidArgumentException;
 use ReflectionClass;
 use ReflectionFunction;
@@ -26,6 +27,13 @@ class Container implements ContainerContract
      * @var array<object>
      */
     protected array $shared = [];
+
+    /**
+     * Список созданных синглтонов.
+     *
+     * @var array<object>
+     */
+    protected array $singletons = [];
 
     /**
      * Устанавливант привязку интерфейса или абстрактного класса с его конкретной реализацией.
@@ -53,7 +61,7 @@ class Container implements ContainerContract
      * @param string $abstract Интерфейс или абстрактный класс дял которого нужно получить привязку.
      * @return string|null
      */
-    public function resolveAbstract(string $abstract): ?string
+    protected function resolveAbstract(string $abstract): ?string
     {
         return key_exists($abstract, $this->bindings)
             ? $this->bindings[$abstract]
@@ -74,6 +82,30 @@ class Container implements ContainerContract
         $this->shared[$abstract ?? $object::class] = $object;
 
         return $this;
+    }
+
+    /**
+     * Запоминает синглтон.
+     *
+     * @param object $object
+     * @return void
+     */
+    protected function saveSingleton(object $object): void
+    {
+        $this->singletons[$object::class] = $object;
+    }
+
+    /**
+     * Получить синглтон, если он уже был создан, иначе null.
+     *
+     * @param string $singletonClass
+     * @return object|null
+     */
+    protected function getSingleton(string $singletonClass): ?object
+    {
+        return key_exists($singletonClass, $this->singletons)
+            ? $this->singletons[$singletonClass]
+            : null;
     }
 
     /**
@@ -238,6 +270,18 @@ class Container implements ContainerContract
             $classReflection = new ReflectionClass($concrete);
         }
 
+        $typeName = $classReflection->getName();
+        $isSingleton = is_subclass_of($typeName, SingletonContract::class);
+
+        // Если тип, который нужно создать является синглтоном,
+        // то попытаемся найти уже созданный экземпляр.
+        if ($isSingleton) {
+            $instance = $this->getSingleton($typeName);
+            if (!is_null($instance)) {
+                return $instance;
+            }
+        }
+
         // Проверим наличие конструктора и, если он есть, соберем аргументы.
         $classConstructor = $classReflection->getConstructor();
         if (!is_null($classConstructor)) {
@@ -245,6 +289,12 @@ class Container implements ContainerContract
         }
 
         // Вернем созданный экземпляр.
-        return $classReflection->newInstance(...$args);
+        $instance = $classReflection->newInstance(...$args);
+        // Если тип, является синглтоном, то сохраним его в контейнер.
+        if ($isSingleton) {
+            $this->saveSingleton($instance);
+        }
+
+        return $instance;
     }
 }
