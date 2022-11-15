@@ -163,7 +163,7 @@ class ContainerUnitTest
         Test::run(
             desc: 'Инъекция зависимостей в статический метод класса',
             test: function () {
-                $injectionResult = $this->container->tap([TestClass::class, 'oneDependencyStatic']);
+                $injectionResult = $this->container->tap(TestClass::class . '::oneDependencyStatic');
 
                 Test::assertTrue($injectionResult);
             }
@@ -215,7 +215,7 @@ class ContainerUnitTest
                 $this->container->share($testDependency);
 
                 Test::assertTrue(
-                    $this->container->tap([new TestClass(), 'modifiedDependency'])
+                    $this->container->tap(TestClass::class . '::modifiedDependency')
                 );
             }
         );

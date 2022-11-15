@@ -34,13 +34,13 @@ interface ContainerContract
     /**
      * Выполнить функцию/метод с внедрением зависимостей.
      *
-     * @param string|\Closure|array<mixed> $action Если необходимо вызвать функцию, то передать строку.
-     *                                             Если метод класса, то массив, где первый элемент это
-     *                                             объект, а второй строка с методом.
+     * @param callable $action Если необходимо вызвать функцию, то передать строку.
+     *                 Если метод класса, то массив, где первый элемент это
+     *                 объект, а второй строка с методом.
      * @param array<mixed> ...$args Аргументы для вызова.
      * @return mixed
      */
-    public function tap(string|array $action, ...$args): mixed;
+    public function tap(callable $action, ...$args): mixed;
 
     /**
      * Создать новый экземпляр класса с внедрением зависимостей.

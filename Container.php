@@ -124,15 +124,17 @@ class Container implements ContainerContract
     /**
      * Выполнить функцию/метод с внедрением зависимостей.
      *
-     * @param string|\Closure|array<mixed> $action Если необходимо вызвать функцию, то передать строку.
-     *                                             Если метод класса, то массив, где первый элемент это
-     *                                             объект, а второй строка с методом.
+     * @param callable $action Если необходимо вызвать функцию, то передать строку.
+     *                 Если метод класса, то массив, где первый элемент это
+     *                 объект, а второй строка с методом.
      * @param array<mixed> ...$args Аргументы для вызова.
      * @return mixed
      */
-    public function tap(string|\Closure|array $action, ...$args): mixed
+    public function tap(callable $action, ...$args): mixed
     {
         if (is_array($action)) {
+            return $this->tapMethod($action[0], $action[1], $args);
+        } else if (is_string($action) && count($action = explode('::', $action)) === 2) {
             return $this->tapMethod($action[0], $action[1], $args);
         }
 
@@ -158,11 +160,11 @@ class Container implements ContainerContract
     /**
      * Вызвать функцию с внедрением зависимостей.
      *
-     * @param string $function Имя функции для вызова.
+     * @param callable $function Имя функции для вызова.
      * @param array<mixed> $args Аргументы для вызова.
      * @return mixed
      */
-    protected function tapFunc(string|\Closure $function, array $args = []): mixed
+    protected function tapFunc(callable $function, array $args = []): mixed
     {
         $functionReflection = new ReflectionFunction($function);
         $args = $this->collectArgs($functionReflection->getParameters(), $args);
