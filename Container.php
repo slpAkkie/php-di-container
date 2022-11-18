@@ -120,6 +120,8 @@ class Container implements ContainerContract
      */
     public function get(string $abstract): ?object
     {
+        $abstract = $this->resolveAbstract($abstract);
+
         return key_exists($abstract, $this->shared)
             ? $this->shared[$abstract]
             : null;
@@ -237,9 +239,7 @@ class Container implements ContainerContract
     protected function resolveType(string $typeToResolve): mixed
     {
         // Сначала проверяем, есть ли уже объект для внедрения у этого типа.
-        $object = $this->get(
-            $this->resolveAbstract($typeToResolve)
-        );
+        $object = $this->get($typeToResolve);
 
         // Если объекта нет, то пытаемся создать для него новый объект.
         if (is_null($object)) {

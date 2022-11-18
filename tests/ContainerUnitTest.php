@@ -84,6 +84,19 @@ class ContainerUnitTest
                 $this->container->remove(TestDependency::class);
             }
         );
+
+        Test::run(
+            desc: 'Получить расшареный объект из контейнера по его привязке',
+            test: function () {
+                $this->container->bind(TestAbstract::class, TestDependency::class);
+                $this->container->share($this->container->new(TestAbstract::class, TestDependency::STATUS_MODIFIED));
+
+                Test::assertNonNull($this->container->get(TestAbstract::class));
+
+                $this->container->unbind(TestAbstract::class);
+                $this->container->remove(TestDependency::class);
+            }
+        );
     }
 
     public function testClosureInjection(): void
