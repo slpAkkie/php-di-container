@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\Container\Contracts;
+namespace Services\Container\Contracts;
 
 interface ContainerContract
 {

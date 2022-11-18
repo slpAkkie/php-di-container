@@ -1,7 +1,7 @@
 <?php
 
-use Framework\Container\Container;
-use Framework\Container\Contracts\SingletonContract;
+use Services\Container\Container;
+use Services\Container\Contracts\SingletonContract;
 use TestModule\Test;
 
 class ContainerUnitTest

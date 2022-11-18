@@ -1,9 +1,9 @@
 <?php
 
-namespace Framework\Container;
+namespace Services\Container;
 
-use Framework\Container\Contracts\ContainerContract;
-use Framework\Container\Contracts\SingletonContract;
+use Services\Container\Contracts\ContainerContract;
+use Services\Container\Contracts\SingletonContract;
 use InvalidArgumentException;
 use ReflectionClass;
 use ReflectionFunction;
