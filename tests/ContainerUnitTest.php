@@ -212,7 +212,7 @@ class ContainerUnitTest
                 $singleton = new TestSingleton(TestSingleton::STATUS_MODIFIED);
 
                 $this->container->bind(TestAbstract::class, TestSingleton::class);
-                $this->container->share($singleton, TestAbstract::class);
+                $this->container->share($singleton);
 
                 Test::assertTrue($this->container->new(TestAbstract::class)->status === TestSingleton::STATUS_MODIFIED);
 
