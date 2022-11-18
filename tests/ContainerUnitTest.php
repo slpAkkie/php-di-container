@@ -200,6 +200,24 @@ class ContainerUnitTest
                 $instance = $this->container->new(TestSingleton::class);
 
                 Test::assertTrue($instance->status === TestSingleton::STATUS_MODIFIED);
+
+                $this->container->unbind(TestAbstract::class);
+                $this->container->remove(TestSingleton::class);
+            }
+        );
+
+        Test::run(
+            desc: 'Расшарить синглтон, и при последующем его создании получить уже созданный экземпляр',
+            test: function () {
+                $singleton = new TestSingleton(TestSingleton::STATUS_MODIFIED);
+
+                $this->container->bind(TestAbstract::class, TestSingleton::class);
+                $this->container->share($singleton, TestAbstract::class);
+
+                Test::assertTrue($this->container->new(TestAbstract::class)->status === TestSingleton::STATUS_MODIFIED);
+
+                $this->container->unbind(TestAbstract::class);
+                $this->container->remove(TestSingleton::class);
             }
         );
     }
@@ -242,6 +260,9 @@ class TestContainer extends Container
     public function remove(string $class): void
     {
         unset($this->shared[$class]);
+        if (key_exists($class, $this->singletons)) {
+            unset($this->singletons[$class]);
+        }
     }
 }
 

@@ -81,6 +81,10 @@ class Container implements ContainerContract
     {
         $this->shared[$abstract ?? $object::class] = $object;
 
+        if (is_subclass_of($object, SingletonContract::class)) {
+            $this->saveSingleton($object);
+        }
+
         return $this;
     }
 
